@@ -3,6 +3,7 @@ package com.BillCalculator.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -43,6 +44,22 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleApiRequestOfJsonParseError(HttpMessageNotReadableException e) {
 
         String message = "JSON parse error : Unexpected character";
+
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        int httpStatusCode = HttpStatus.BAD_REQUEST.value();
+        ApiException apiException = new ApiException(
+                message,
+                httpStatusCode,
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler({UsernameNotFoundException.class})
+    public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException e) {
+
+        String message = "Username not found";
 
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         int httpStatusCode = HttpStatus.BAD_REQUEST.value();

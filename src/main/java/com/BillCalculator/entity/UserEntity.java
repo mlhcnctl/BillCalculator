@@ -1,7 +1,6 @@
 package com.BillCalculator.entity;
 
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,10 +10,10 @@ import java.util.Date;
 
 @Data
 @Getter
-@Table(name = "member")
+@Table(name = "users")
 @Entity
-@EntityListeners(AuditingEntityListener.class) // bu kisim createdDate ve lastModifiedDate database e dogru kayit atsin diye eklendi
-public class MemberEntity {
+@EntityListeners(AuditingEntityListener.class)
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,14 +22,27 @@ public class MemberEntity {
     @Column(name = "name")
     private String fullName;
 
+    @Column(name = "user_name")
+    private String userName;
+
+    @Column(name = "password")
+    private String password;
+
+    @Transient
+    private String passwordConfirm;
+
     @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name = "active")
-    private boolean active;
+    @Column(name = "mail_confirmed")
+    private boolean confirmed;
+
+    //@Column(name = "user_role")
+    //@Builder.Default
+    //private UserRoleEnum userRole = UserRoleEnum.USER;
 
     @Column(name = "created_date")
     @CreatedDate
