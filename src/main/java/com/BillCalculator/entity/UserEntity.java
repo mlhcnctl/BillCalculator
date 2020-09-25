@@ -46,7 +46,8 @@ public class UserEntity implements UserDetails {
     private String email;
 
     @Column(name = "mail_confirmed")
-    private boolean confirmed;
+    @Builder.Default
+    private boolean confirmed = false;
 
     @Column(name = "user_role")
     @Builder.Default

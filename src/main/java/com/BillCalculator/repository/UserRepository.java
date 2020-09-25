@@ -11,6 +11,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     UserEntity findFirstByOrderByCreatedDateDesc();
 
-    Optional<UserEntity> findByUserName(String username);
+    UserEntity findByUserName(String username);
 
 }

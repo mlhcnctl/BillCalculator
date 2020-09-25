@@ -8,18 +8,12 @@ import com.BillCalculator.entity.ConfirmationMailEntity;
 import com.BillCalculator.entity.UserEntity;
 import com.BillCalculator.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
-import java.util.Optional;
-
 @Service
 @AllArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final ConfirmationMailService confirmationMailService;
@@ -39,7 +33,7 @@ public class UserService implements UserDetailsService {
         userEntity.setPassword(encryptedPassword);
         userEntity.setPhoneNumber(userRegisterRequest.getPhoneNumber());
         userEntity.setEmail(userRegisterRequest.getEmail());
-        userEntity.setConfirmed(false);
+        //userEntity.setConfirmed(false);
         userRepository.save(userEntity);
 
         userEntity = userRepository.findFirstByOrderByCreatedDateDesc();
@@ -58,16 +52,5 @@ public class UserService implements UserDetailsService {
         userRepository.save(userEntity);
 
         confirmationMailService.deleteConfirmationMailEntity(confirmationMailEntity.getId());
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Optional<UserEntity> optionalUserEntity = userRepository.findByUserName(username);
-        return (UserDetails) optionalUserEntity.orElseThrow(() -> new UsernameNotFoundException(MessageFormat.format("User with username {0} cannot be found.", username)));
-
-        //bu kismi kayit olurken daha once kullanici kayit olmus mu seklinde kontrol amacli kullanacagiz..
-        //
-
     }
 }

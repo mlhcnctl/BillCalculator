@@ -14,7 +14,7 @@ public class TokenManager {
 
     private static final String secretKey = "melihkey";
     private static final int expirationTime = 5 * 60 * 1000;
-    //private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String generateToken(String username) {
         //Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
@@ -45,7 +45,7 @@ public class TokenManager {
     }
 
     private Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
     }
 
 }
