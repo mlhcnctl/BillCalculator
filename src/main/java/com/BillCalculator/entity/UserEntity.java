@@ -4,16 +4,24 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Table(name = "users")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class UserEntity {
+public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,9 +48,9 @@ public class UserEntity {
     @Column(name = "mail_confirmed")
     private boolean confirmed;
 
-    //@Column(name = "user_role")
-    //@Builder.Default
-    //private UserRoleEnum userRole = UserRoleEnum.USER;
+    @Column(name = "user_role")
+    @Builder.Default
+    private UserRoleEnum userRole = UserRoleEnum.USER;
 
     @Column(name = "created_date")
     @CreatedDate
@@ -52,4 +60,34 @@ public class UserEntity {
     @LastModifiedDate
     private Date lastModifiedDate;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        final SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(userRole.name());
+        return Collections.singletonList(simpleGrantedAuthority);
+    }
+
+    @Override
+    public String getUsername() {
+        return userName;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
