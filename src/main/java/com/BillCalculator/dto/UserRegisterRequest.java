@@ -24,7 +24,7 @@ public class UserRegisterRequest {
     @NotEmpty(message = "confirm password cannot be null or empty")
     private String confirmPassword;
     @NotEmpty(message = "phone number cannot be null or empty")
-    @Pattern(regexp = "(\\+90|0)[0-9]{10}", message = "the phone number must be 10 digits number and all numbers must be in 0 to 10")
+    @Pattern(regexp = "(\\+90|0)[0-9]{10}", message = "the phone number must be 11 digits number and all numbers must be in 0 to 10")
     private String phoneNumber;
     @NotEmpty(message = "email cannot be null or empty")
     @Email(message = "please provide valid e-mail format")

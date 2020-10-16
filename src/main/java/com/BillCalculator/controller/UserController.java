@@ -37,6 +37,8 @@ public class UserController {
         Optional<ConfirmationMailEntity> optionalConfirmationMailEntity = confirmationMailService.findByToken(token);
         optionalConfirmationMailEntity.ifPresent(userService::confirmUser);
 
+        // burada sonradan response olarak bir model dön !!
+
         return "mail confirmation is succesfull!";
     }
 

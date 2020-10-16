@@ -41,9 +41,9 @@ public class ConfirmationMailService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
         mailMessage.setSubject("Mail Confirmation Link!");
-        mailMessage.setFrom("<MAIL>");
+        mailMessage.setFrom("mail@gmail.com");
         mailMessage.setText(
-                "Thank you for registering. Please click on the below link to activate your account." + "http://localhost:8080/register/confirm?token="
+                "Thank you for registering. Please click on the link to activate your account. " + "http://localhost:8080/register/confirm?token="
                         + token);
 
         sendEmail(mailMessage);
@@ -55,7 +55,8 @@ public class ConfirmationMailService {
         javaMailSender.send(email);
     }
 
-    public void deleteConfirmationMailEntity(Long id) {
-        confirmationMailRepository.deleteById(id);
+    public void confirmMail(ConfirmationMailEntity confirmationMailEntity) {
+        confirmationMailEntity.setMailConfirmed(true);
+        confirmationMailRepository.save(confirmationMailEntity);
     }
 }
