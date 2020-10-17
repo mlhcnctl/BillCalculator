@@ -1,6 +1,7 @@
 package com.BillCalculator.controller;
 
 import com.BillCalculator.auth.TokenManager;
+import com.BillCalculator.dto.ConfirmMailResponse;
 import com.BillCalculator.dto.UserLoginRequest;
 import com.BillCalculator.dto.UserRegisterRequest;
 import com.BillCalculator.dto.UserRegisterResponse;
@@ -32,14 +33,8 @@ public class UserController {
     }
 
     @GetMapping("/register/confirm")
-    public String confirmMail(@RequestParam("token") String token) {
-
-        Optional<ConfirmationMailEntity> optionalConfirmationMailEntity = confirmationMailService.findByToken(token);
-        optionalConfirmationMailEntity.ifPresent(userService::confirmUser);
-
-        // burada sonradan response olarak bir model dön !!
-
-        return "mail confirmation is succesfull!";
+    public ResponseEntity<ConfirmMailResponse> confirmMail(@RequestParam("token") String token) {
+        return ResponseEntity.ok(confirmationMailService.confirmUser(token));
     }
 
     @PostMapping("/login")

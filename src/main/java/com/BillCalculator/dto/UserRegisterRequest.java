@@ -30,4 +30,11 @@ public class UserRegisterRequest {
     @Email(message = "please provide valid e-mail format")
     private String email;
 
+    public boolean checkPasswords() {
+        if (password.equals(confirmPassword))
+            return true;
+        else
+            return false;
+    }
+
 }

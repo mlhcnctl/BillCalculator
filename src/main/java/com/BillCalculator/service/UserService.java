@@ -20,10 +20,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final ConfirmationMailService confirmationMailService;
 
-    public UserRegisterResponse registerUser(UserRegisterRequest userRegisterRequest) { // sonraları aşağıda password ve confirmPasword eşitliğini kontrol et
+    public UserRegisterResponse registerUser(UserRegisterRequest userRegisterRequest) {
 
         UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
         ResponseData responseData = new ResponseData();
+
+        boolean isPasswordEqualsConfirmPassword = userRegisterRequest.checkPasswords();
+
+        if (isPasswordEqualsConfirmPassword == false) {
+            responseData.setErrorCode(ErrorCodes.FAILED);
+            responseData.setErrorExplanation(ErrorCodes.PASSWORD_DOES_NOT_EQUAL_CONFIRM_PASSWORD);
+            userRegisterResponse.setResponse(responseData);
+            return userRegisterResponse;
+        }
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String encryptedPassword = bCryptPasswordEncoder.encode(userRegisterRequest.getPassword());
@@ -63,11 +72,4 @@ public class UserService {
         return userRegisterResponse;
     }
 
-    public void confirmUser(ConfirmationMailEntity confirmationMailEntity) {
-        UserEntity userEntity = confirmationMailEntity.getUserEntity();
-        userEntity.setConfirmed(true);
-        userRepository.save(userEntity);
-
-        confirmationMailService.confirmMail(confirmationMailEntity);
-    }
 }
