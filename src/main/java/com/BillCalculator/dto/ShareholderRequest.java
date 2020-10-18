@@ -21,5 +21,7 @@ public class ShareholderRequest {
     private String phoneNumber;
     @Email(message = "please provide valid e-mail format")
     private String email;
+    @NotEmpty(message = "owner username of shareholder cannot be null or empty")
+    private String ownerUsernameOfShareHolder;
 
 }

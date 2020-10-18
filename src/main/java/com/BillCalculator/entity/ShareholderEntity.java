@@ -32,6 +32,9 @@ public class ShareholderEntity {
     @Column(name = "active")
     private boolean active;
 
+    @Column(name = "owner_username_of_stakeholder")
+    private String ownerUsernameOfStakeholder;
+
     @Column(name = "created_date")
     @CreatedDate
     private Date createdDate;

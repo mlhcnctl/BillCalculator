@@ -25,6 +25,7 @@ public class ShareholderService {
 
             shareholderEntity.setFullName(shareHolderRequest.getName());
             shareholderEntity.setActive(true);
+            shareholderEntity.setOwnerUsernameOfStakeholder(shareHolderRequest.getOwnerUsernameOfShareHolder());
             shareholderRepository.save(shareholderEntity);
 
             responseData.setErrorCode(ErrorCodes.SUCCESS);
