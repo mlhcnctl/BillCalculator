@@ -12,18 +12,16 @@ import java.util.Date;
 @Service
 public class TokenManager {
 
-    private static final String secretKey = "melihkey";
     private static final int expirationTime = 5 * 60 * 1000;
     Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String generateToken(String username) {
-        //Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuer("melihcan imzasi")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(key)
                 .compact();
     }
 

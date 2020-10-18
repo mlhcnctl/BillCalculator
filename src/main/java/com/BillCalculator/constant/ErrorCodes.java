@@ -14,4 +14,7 @@ public class ErrorCodes {
     public static final String PASSWORD_DOES_NOT_EQUAL_CONFIRM_PASSWORD = "Password does not match confirm password.";
     public static final String TOKEN_IS_NOT_FOUND = "Token is not found";
     public static final String MAIL_ALREADY_CONFIRMED = "Mail already confirmed.";
+    public static final String PASSWORD_IS_ICORRECT = "Password is incorrect";
+    public static final String USERNAME_OR_PASSWORD_INCORRECT = "Username or password is incorrect";
+    public static final String LOGIN_SUCCESSFULL = "Login successful";
 }

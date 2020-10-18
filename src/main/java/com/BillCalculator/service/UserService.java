@@ -1,13 +1,13 @@
 package com.BillCalculator.service;
 
+import com.BillCalculator.auth.TokenManager;
 import com.BillCalculator.constant.ErrorCodes;
-import com.BillCalculator.dto.ResponseData;
-import com.BillCalculator.dto.UserRegisterRequest;
-import com.BillCalculator.dto.UserRegisterResponse;
-import com.BillCalculator.entity.ConfirmationMailEntity;
+import com.BillCalculator.dto.*;
 import com.BillCalculator.entity.UserEntity;
 import com.BillCalculator.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +19,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ConfirmationMailService confirmationMailService;
+    private final AuthenticationManager authenticationManager;
+    private final TokenManager tokenManager;
 
     public UserRegisterResponse registerUser(UserRegisterRequest userRegisterRequest) {
 
@@ -70,6 +72,41 @@ public class UserService {
         responseData.setErrorExplanation(ErrorCodes.SUCCESS_EXPLANATION_USER);
         userRegisterResponse.setResponse(responseData);
         return userRegisterResponse;
+    }
+
+    public UserLoginResponse checkLogin(UserLoginRequest userLoginRequest) {
+
+        UserLoginResponse response = new UserLoginResponse();
+        ResponseDataForLogin responseDataForLogin = new ResponseDataForLogin();
+        String token = null;
+
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginRequest.getUserName(),
+                    userLoginRequest.getPassword()));
+        } catch (Exception ex) {
+            responseDataForLogin.setErrorCode(ErrorCodes.FAILED);
+            responseDataForLogin.setErrorExplanation(ErrorCodes.USERNAME_OR_PASSWORD_INCORRECT);
+            response.setResponse(responseDataForLogin);
+            return response;
+        }
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        UserEntity user = userRepository.findByUserName(userLoginRequest.getUserName());
+
+        if (!encoder.matches(userLoginRequest.getPassword(), user.getPassword())) {
+            responseDataForLogin.setErrorCode(ErrorCodes.FAILED);
+            responseDataForLogin.setErrorExplanation(ErrorCodes.PASSWORD_IS_ICORRECT);
+            response.setResponse(responseDataForLogin);
+            return response;
+        }
+
+        token = tokenManager.generateToken(userLoginRequest.getUserName());
+        responseDataForLogin.setErrorCode(ErrorCodes.SUCCESS);
+        responseDataForLogin.setErrorExplanation(ErrorCodes.LOGIN_SUCCESSFULL);
+        responseDataForLogin.setToken(token);
+        response.setResponse(responseDataForLogin);
+        return response;
+
     }
 
 }

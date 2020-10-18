@@ -35,8 +35,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
             try {
                 username = tokenManager.getUserNameFromToken(token);
-            } catch (Exception ex) {
+            } catch (Exception ex) { // burda hata alması durumunda bunu global error olarak düzenle!
                 System.out.println(ex.getMessage());
+                throw ex;
             }
         }
 
