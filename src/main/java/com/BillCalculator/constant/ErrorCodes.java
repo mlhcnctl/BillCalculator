@@ -17,4 +17,5 @@ public class ErrorCodes {
     public static final String PASSWORD_IS_ICORRECT = "Password is incorrect";
     public static final String USERNAME_OR_PASSWORD_INCORRECT = "Username or password is incorrect";
     public static final String LOGIN_SUCCESSFULL = "Login successful";
+    public static final String EMAIL_GOT_ERROR_WHILE_SENDING = "Email is not sent";
 }

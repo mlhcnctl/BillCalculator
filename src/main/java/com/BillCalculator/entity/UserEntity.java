@@ -20,7 +20,7 @@ import java.util.Date;
 @Getter
 @Table(name = "users")
 @Entity
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(AuditingEntityListener.class) // bu kisim createdDate ve lastModifiedDate database e dogru kayit atsin diye eklendi
 public class UserEntity implements UserDetails {
 
     @Id

@@ -70,21 +70,29 @@ public class ConfirmationMailService {
         confirmationMailEntity.setConfirmationToken(confirmationToken);
         confirmationMailRepository.save(confirmationMailEntity);
 
-        sendConfirmationMail(userEntity.getEmail(), confirmationToken);
+        try {
+            sendConfirmationMail(userEntity.getEmail(), confirmationToken);
+        } catch (Exception ex) {
+            throw ex;
+        }
 
     }
 
     public void sendConfirmationMail(String email, String token) {
 
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(email);
-        mailMessage.setSubject("Mail Confirmation Link!");
-        mailMessage.setFrom("mail@gmail.com");
-        mailMessage.setText(
-                "Thank you for registering. Please click on the link to activate your account. " + "http://localhost:8080/register/confirm?token="
-                        + token);
+        try {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(email);
+            mailMessage.setSubject("Mail Confirmation Link!");
+            mailMessage.setFrom("mail@gmail.com");
+            mailMessage.setText(
+                    "Thank you for registering. Please click on the link to activate your account. " + "http://localhost:8080/register/confirm?token="
+                            + token);
 
-        sendEmail(mailMessage);
+            sendEmail(mailMessage);
+        } catch (Exception ex) {
+            throw ex;
+        }
 
     }
 

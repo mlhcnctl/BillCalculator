@@ -66,7 +66,14 @@ public class UserService {
 
         userEntity = userRepository.findFirstByOrderByCreatedDateDesc();
 
-        confirmationMailService.saveConfirmation(userEntity);
+        try {
+            confirmationMailService.saveConfirmation(userEntity);
+        } catch (Exception ex) {
+            responseData.setErrorCode(ErrorCodes.FAILED);
+            responseData.setErrorExplanation(ErrorCodes.EMAIL_GOT_ERROR_WHILE_SENDING);
+            userRegisterResponse.setResponse(responseData);
+            return userRegisterResponse;
+        }
 
         responseData.setErrorCode(ErrorCodes.SUCCESS);
         responseData.setErrorExplanation(ErrorCodes.SUCCESS_EXPLANATION_USER);
