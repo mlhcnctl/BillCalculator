@@ -28,6 +28,7 @@ public class LogService {
     private final LogRepository logRepository;
     private final ESConfig esConfig;
 
+
     @Async
     public void Log(String logId, String className, String title, String message, int code) {
         LogToDB(logId, className, title, message, code);
